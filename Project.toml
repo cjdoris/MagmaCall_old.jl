@@ -1,0 +1,4 @@
+name = "MagmaCall"
+uuid = "2dfa59e8-2d7b-4b4d-9ac0-85419573dc83"
+authors = ["Christopher Doris <github.com/cjdoris>"]
+version = "0.1.0"
