@@ -16,20 +16,9 @@ function print(io::IO, o::MagmaObject)
   run_cmd(proc[], "printf \"%o\", ", name(o), on_byte=io)
 end
 
-function getproperty(o::MagmaObject, k::Symbol)
-  r = new_magmaobject()
-  run_cmd(proc[], name(r), ":=", name(o), '`', k)
-  r
-end
-
-function setproperty!(o::MagmaObject, k::Symbol, x)
-  x = asobj(x)
-  run_cmd(proc[], name(o), '`', k, ":=", name(x))
-end
-
-function setproperty!(o::MagmaObject, k::Symbol, x::Nothing)
-  run_cmd(proc[], "delete ", name(o), '`', k)
-end
+getproperty(o::MagmaObject, k::Symbol) = magmagetattr(o, k)
+setproperty!(o::MagmaObject, k::Symbol, x) = magmasetattr(o, k)
+setproperty!(o::MagmaObject, k::Symbol, ::Nothing) = magmadelattr(o, k)
 
 function propertynames(o::MagmaObject)
   io = IOBuffer()

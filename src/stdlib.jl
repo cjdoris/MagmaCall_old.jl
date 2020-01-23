@@ -29,12 +29,15 @@ const STDLIB = [
   (:AssignNames, (~,*), 0),
   (:Names, *, 1),
   (:Name, *, 1),
+  (:Format, *, 1),
   (:Sort, 1, 1),
   (:Sort, 2, 2),
   (:Sort, (~,), 0),
   (:Sort, (~,*), 0),
   (:Sort, (~,*,~), 0),
   (:Random, *, 1),
+  (:ShowIdentifiers, 0, 0),
+  (:Parent, *, 1),
 ]
 
 function declare_intrinsic(mdl, n, a, r; prefix=:magma_, doexport=true, dorefs=true)

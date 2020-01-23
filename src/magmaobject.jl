@@ -51,17 +51,32 @@ function Base.showerror(io::IO, e::MagmaRuntimeError)
   print(io, e.err)
 end
 
-"""
-    magmasprint(o, [fmt=:o])
-
-Convert `o` to a `String` in the given format.
-"""
-function magmasprint(o::MagmaObject, fmt=:o)
-  io = IOBuffer()
-  run_cmd(proc[], "printf \"%", fmt, "\", ", name(o), on_byte=io)
-  read(seekstart(io), String)
-end
-export magmasprint
-
 magmacoerce(a, b) = magmacallf(:!, a, b)
+export magmacoerce
+
+magmalength(a) = magmaintconvert(Int, magmacallf(Symbol("#"), a))
+export magmalength
+
+function magmagetattr(o::MagmaObject, k::Symbol)
+  r = new_magmaobject()
+  run_cmd(proc[], name(r), ":=", name(o), '`', k)
+  r
+end
+
+function magmasetattr(o::MagmaObject, k::Symbol, x)
+  x = asobj(x)
+  run_cmd(proc[], name(o), '`', k, ":=", name(x))
+end
+
+function magmadelattr(o::MagmaObject, k::Symbol)
+  run_cmd(proc[], "delete ", name(o), '`', k)
+end
+
+function magmaprint(io::IO, o::MagmaObject)
+  run_cmd(proc[], "printf \"%o\", ", name(o), on_byte=io)
+end
+
+function magmaprintm(io::IO, o::MagmaObject)
+  run_cmd(proc[], "printf \"%m\", ", name(o), on_byte=io)
+end
 
